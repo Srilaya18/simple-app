@@ -1,19 +1,12 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: java-app
+  name: java-service
 spec:
-  replicas: 2
+  type: NodePort
   selector:
-    matchLabels:
-      app: java-app
-  template:
-    metadata:
-      labels:
-        app: java-app
-    spec:
-      containers:
-        - name: java-app
-          image: srilayam/java-app:latest
-          ports:
-            - containerPort: 8086
+    app: java-app
+  ports:
+    - port: 8086       # Internal cluster port
+      targetPort: 8086 # Port the pod is listening on
+      nodePort: 30086  # Port you will use on your machine (range 30000-32767)
